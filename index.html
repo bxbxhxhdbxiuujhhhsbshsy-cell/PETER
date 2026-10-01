@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PETER</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+        .main-image-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+        .main-image {
+            max-width: 80%;
+            max-height: 80%;
+            display: block;
+        }
+        .raining-image {
+            position: absolute;
+            top: 0;
+            opacity: 0.8;
+            filter: blur(2px);
+            animation: rain linear infinite;
+        }
+        @keyframes rain {
+            from {
+                transform: translateY(-150px);
+                opacity: 0.8;
+            }
+            to {
+                transform: translateY(105vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <audio loop id="background-audio">
+        <source src="audio.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div class="main-image-container">
+        <img src="image.png" alt="Central Display Image" class="main-image">
+    </div>
+
+    <script>
+        const mainImageSrc = "image.png";
+        const numberOfRaindrops = 60;
+        const screenWidth = window.innerWidth;
+
+        function createRainingImage() {
+            const img = document.createElement('img');
+            img.src = mainImageSrc;
+            img.classList.add('raining-image');
+
+            const size = Math.random() * 50 + 50;
+            img.style.width = `${size}px`;
+            img.style.height = `${size}px`;
+
+            const horizontalPosition = Math.random() * screenWidth;
+            img.style.left = `${horizontalPosition}px`;
+
+            const animationDuration = Math.random() * 5 + 2;
+            img.style.animationDuration = `${animationDuration}s`;
+
+            const animationDelay = Math.random() * animationDuration;
+            img.style.animationDelay = `-${animationDelay}s`;
+
+            document.body.appendChild(img);
+        }
+
+        for (let i = 0; i < numberOfRaindrops; i++) {
+            createRainingImage();
+        }
+
+        // Auto-start audio after 1 second (1000ms)
+        const audio = document.getElementById('background-audio');
+
+        setTimeout(() => {
+            audio.muted = false;
+            audio.play().catch(error => {
+                console.log("Autoplay with sound was blocked by browser policies until the user interacts with the page.", error);
+            });
+        }, 1000);
+    </script>
+
+</body>
+</html>
